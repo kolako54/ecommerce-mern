@@ -12,14 +12,14 @@ export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <Link href="/">
-                <a className="navbar-brand">DEVAT</a>
+                <a className="navbar-brand">D E V _ W I T H _ E L I O</a>
             </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
             <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
+                <ul className="navbar-nav ">
                     <li className="nav-item">
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}><i className="fas fa-shopping-cart" aria-hidden="true"></i>Cart</a>
