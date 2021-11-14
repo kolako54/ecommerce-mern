@@ -1,20 +1,30 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-// import Validate from './../utils/validation'
+import validation from '../utils/validation'
+import { DataContext } from '../store/GlobalState'
+import { postData } from '../db/fetchData'
 
 export default function Register() {
     const initialState = { name: '', email: '', password: '', cf_password: '' }
     const [userData, setUserData] = useState(initialState);
-    const { name, email, password, cf_password } = userData
+    const { name, email, password, cf_password } = userData;
+    const [state, dispatch] = useContext(DataContext);
     const handleChangeInput = e => {
         const { value, name } = e.target;
-        // const err = Validate({ [name]: value });
-        console.log(err);
+
         setUserData({ ...userData, [name]: value })
+        dispatch({ type: 'NOTIFY', payload: {} })
     }
-    const onSubmitHandle = (e) => {
+    const onSubmitHandle = async (e) => {
         e.preventDefault();
+        const errMsg = validation(name, email, password, cf_password);
+        if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
+        const res = await postData('auth/register', userData)
+        console.log(res)
+        if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
+        dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
         console.log(userData);
     }
     return (
