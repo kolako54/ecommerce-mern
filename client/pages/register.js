@@ -1,15 +1,26 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import validation from '../utils/validation'
 import { DataContext } from '../store/GlobalState'
 import { postData } from '../db/fetchData'
+import { useRouter } from 'next/router'
+
 
 export default function Register() {
+    const router = useRouter();
     const initialState = { name: '', email: '', password: '', cf_password: '' }
     const [userData, setUserData] = useState(initialState);
     const { name, email, password, cf_password } = userData;
-    const [state, dispatch] = useContext(DataContext);
+    const {state, dispatch} = useContext(DataContext);
+    const { auth } = state;
+    useEffect(() => {
+        console.log('register page')
+        console.log(auth)
+        if (Object.keys(auth).length !== 0) {
+            router.push('/');
+        }
+    }, [auth])
     const handleChangeInput = e => {
         const { value, name } = e.target;
 
@@ -51,7 +62,7 @@ export default function Register() {
                     <input value={cf_password} onChange={handleChangeInput} name="cf_password" type="password" className="form-control" id="exampleInputPassword2" />
                 </div>
                 <button type="submit" className="btn btn-dark w-100">Register</button>
-                <p className="my-2">already have an account?
+                <p className="my-2" onClick={() => dispatch({type: 'NOTIFY', payload: {}})}>already have an account?
                     <Link href="/signin"><a style={{ color: 'crimson' }}> Login Now</a></Link>
                 </p>
             </form>
