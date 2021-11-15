@@ -1,5 +1,5 @@
 import connectDB from '../../../db/connectDB'
-import ProducetModel from '../../../models/product'
+import ProductsModel from '../../../models/product'
 connectDB();
 
 export default async (req, res) => {
