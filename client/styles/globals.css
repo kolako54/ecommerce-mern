@@ -14,8 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+::selection {
+  background: #dc3545;
+  color: wheat;
+}
 img{
   object-fit: cover;
+  object-position: 0 30%
 }
 
 /* ----------- Loading ------------ */
