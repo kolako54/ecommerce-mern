@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { getData } from '../../db/fetchData';
 import Head from 'next/head'
+import { DataContext } from '../../store/GlobalState';
+import { ACTIONS, addToCard } from '../../store/Actions';
 
 
 export default function Product(props) {
     const [product] = useState(props.product);
     const [tab, setTab] = useState(0);
+    const {state, dispatch} = useContext(DataContext);
+    const {card} = state;
     const isActive = (i) => {
         if (tab === i) return 'active';
         return '';
@@ -38,7 +42,7 @@ export default function Product(props) {
                 </div>
                 <div className="my-2" style={{fontWeight: 300}}>{product.description}</div>
                 <div className="my-2">{product.content} {product.content} {product.content}</div>
-                <button type="button" className="btn btn-dark d-block my-3 px-5">Buy</button>
+                <button type="button" className="btn btn-dark d-block my-3 px-5" onClick={() => dispatch(addToCard(props.product, card))}>Buy</button>
 
 
             </div>
