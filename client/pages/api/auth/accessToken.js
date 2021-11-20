@@ -8,7 +8,6 @@ export default async (req, res) => {
         console.log('this is refreshtoken')
       
         const rf_token = req.cookies.refreshToken
-        console.log(rf_token)
         if (!rf_token) {
             return res.status(400).json({ err: 'Please login again.' })
         }

@@ -31,7 +31,11 @@ export default function CartItem({ item, dispatch, card }) {
                 <button className="btn btn-outline-secondary" disabled={item.quantity === item.inStock ? true : false} onClick={() => dispatch(increase(card, item._id))}> + </button>
             </td>
             <td className="align-middle" style={{ minWidth: '50px', cursor: 'pointer' }}>
-                <i className="far fa-trash-alt text-danger"></i>
+                <i className="far fa-trash-alt text-danger" style={{ fontSize: '18px' }}
+                    data-toggle="modal" data-target="#exampleModal"
+                    onClick={() => dispatch({ type: 'ADD_MODAL', payload: { data: card, title: item.title, id: item._id } })}>
+
+                </i>
             </td>
         </tr>
     )

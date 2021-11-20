@@ -17,6 +17,11 @@ const reducers = (state, action) => {
                 ...state,
                 card: action.payload
             }
+            case ACTIONS.ADD_MODAL:
+            return {
+                ...state,
+                modal: action.payload
+            }
         default:
             return state
     }

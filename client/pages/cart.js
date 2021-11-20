@@ -7,11 +7,8 @@ import { getData } from '../db/fetchData';
 export default function Cart() {
     const { state, dispatch } = useContext(DataContext);
     const { card, auth } = state;
-    console.log('cart component', card)
     const [total, setTotal] = useState(0)
-    if (card.length === 0) {
-        return <img className="mt-5 img-responsive w-100" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3RvcmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80" alt="Empty" />
-    }
+
     useEffect(() => {
         const getTotal = () => {
             const res = card.reduce((prev, curr) => {
@@ -38,6 +35,10 @@ export default function Cart() {
             updateCart()
         }
     }, [])
+
+    if (card.length === 0) {
+        return <img className="mt-5 img-responsive w-100" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3RvcmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80" alt="Empty" />
+    }
     return (
         <div className="row mx-auto my-5">
             <Head>

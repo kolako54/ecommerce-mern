@@ -4,7 +4,7 @@ import reducers from './Reducers';
 
 export const DataContext = createContext();
 export const DataProvider = ({ children }) => {
-    const initialState = { notify: {}, auth: {}, card: [] }
+    const initialState = { notify: {}, auth: {}, card: [], modal: {} }
     const [state, dispatch] = useReducer(reducers, initialState);
     const { card } = state
 
@@ -13,13 +13,9 @@ export const DataProvider = ({ children }) => {
     useEffect(() => {
         console.log('globalstate')
         const firstLogin = localStorage.getItem('firstLogin');
-        console.log(firstLogin);
         if (firstLogin) {
-            console.log('inside if')
             getData('auth/accessToken').then(res => {
-                console.log(res)
                 if (res.err) {
-                    console.log('inside error')
                     return localStorage.removeItem('firstLogin')
                 };
                 dispatch({

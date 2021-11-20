@@ -22,7 +22,6 @@ const register = async (req, res) => {
         }
         const passwordHash = await bcrypt.hash(password, 12);
         const UserModel = await User.create({ name, email, password: passwordHash, cf_password });
-        console.log(UserModel);
         return res.json({ msg: "register success!" })
 
     } catch (err) {

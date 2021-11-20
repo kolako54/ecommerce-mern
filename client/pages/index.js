@@ -8,7 +8,6 @@ import ProductItem from './../components/product/ProductItem'
 export default function index(props) {
 
   const [products, setProducts] = useState(props.products);
-  console.log(products)
   return (
     <div className="products">
       <Head>
