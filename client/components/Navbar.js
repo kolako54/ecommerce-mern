@@ -7,7 +7,8 @@ import Cookies from 'js-cookie';
 export default function Navbar() {
     const router = useRouter();
     const { state, dispatch } = useContext(DataContext);
-    const { auth } = state
+    const { auth, card } = state
+    console.log(card);
     console.log(auth);
     const isActive = (r) => {
         if (r === router.pathname) return " active"
@@ -18,7 +19,7 @@ export default function Navbar() {
         Cookies.remove('refreshToken', { path: 'api/auth/accessToken' });
         localStorage.removeItem('firstLogin');
         dispatch({ type: 'AUTH', payload: {} })
-        dispatch({type: 'NOTIFY', payload: {success: 'Logged out!'}})
+        dispatch({ type: 'NOTIFY', payload: { success: 'Logged out!' } })
     }
     const loggedRouter = () => {
         return (<li className="nav-item dropdown">
@@ -43,10 +44,14 @@ export default function Navbar() {
             </button>
 
             <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul className="navbar-nav ">
+                <ul className="navbar-nav p-1">
                     <li className="nav-item">
                         <Link href="/cart">
-                            <a className={"nav-link" + isActive('/cart')}><i className="fas fa-shopping-cart" aria-hidden="true"></i>Cart</a>
+                            <a className={"nav-link" + isActive('/cart')}>
+                                <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
+                                    <span className="position-absolute" style={{ padding: '3px 6px', background: '#ed143dc2', top: '-10px', right: '-10px', color: 'white', fontSize: '14px', borderRadius: '50%' }}>{card.length}</span>
+                                </i>Cart
+                            </a>
                         </Link>
                     </li>
                     {Object.keys(auth).length === 0 ? (

@@ -12,7 +12,7 @@ export default function Register() {
     const initialState = { name: '', email: '', password: '', cf_password: '' }
     const [userData, setUserData] = useState(initialState);
     const { name, email, password, cf_password } = userData;
-    const {state, dispatch} = useContext(DataContext);
+    const { state, dispatch } = useContext(DataContext);
     const { auth } = state;
     useEffect(() => {
         console.log('register page')
@@ -36,6 +36,7 @@ export default function Register() {
         console.log(res)
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+        router.push('/')
         console.log(userData);
     }
     return (
@@ -62,7 +63,7 @@ export default function Register() {
                     <input value={cf_password} onChange={handleChangeInput} name="cf_password" type="password" className="form-control" id="exampleInputPassword2" />
                 </div>
                 <button type="submit" className="btn btn-dark w-100">Register</button>
-                <p className="my-2" onClick={() => dispatch({type: 'NOTIFY', payload: {}})}>already have an account?
+                <p className="my-2" onClick={() => dispatch({ type: 'NOTIFY', payload: {} })}>already have an account?
                     <Link href="/signin"><a style={{ color: 'crimson' }}> Login Now</a></Link>
                 </p>
             </form>
