@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { decrease, increase } from '../store/Actions'
 
 export default function CartItem({ item, dispatch, card }) {
     return (
@@ -24,7 +25,14 @@ export default function CartItem({ item, dispatch, card }) {
                     : <p className="mb-1 text-danger">Out Stock</p>}
 
             </td>
-            <td></td>
+            <td className="align-middle" style={{ minWidth: '150px' }}>
+                <button className="btn btn-outline-secondary" disabled={item.quantity < 2 ? true : false} onClick={() => dispatch(decrease(card, item._id))}> - </button>
+                <span className="px-3">{item.quantity}</span>
+                <button className="btn btn-outline-secondary" disabled={item.quantity === item.inStock ? true : false} onClick={() => dispatch(increase(card, item._id))}> + </button>
+            </td>
+            <td className="align-middle" style={{ minWidth: '50px', cursor: 'pointer' }}>
+                <i className="far fa-trash-alt text-danger"></i>
+            </td>
         </tr>
     )
 }

@@ -15,8 +15,8 @@ a {
   box-sizing: border-box;
 }
 ::selection {
-  background: #dc3545;
-  color: wheat;
+  background: #1d2124;
+  color: white;
 }
 img{
   object-fit: cover;

@@ -20,30 +20,34 @@ export default function index(props) {
 }
 /*********** Server Side Render ****************/
 
-export async function getServerSideProps() {
+// export async function getServerSideProps() {
+//   const res = await getData('product');
+//   console.log('ssr')
+//   console.log(res);
+//   return {
+//     props: {
+//       products: res.products,
+//       result: res.result,
+//     }, // will be passed to the page component as props
+//   }
+// }
+
+/*********** Incremental Static Regeneration ****************/
+export async function getStaticProps() {
   const res = await getData('product');
-  console.log('ssr')
-  console.log(res);
+
+
   return {
     props: {
       products: res.products,
       result: res.result,
-    }, // will be passed to the page component as props
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 5, // In seconds
   }
 }
 
-/*********** Incremental Static Regeneration ****************/
-// export async function getStaticPaths() {
-//   const res = await fetch('https://.../posts')
-//   const posts = await res.json()
 
-//   // Get the paths we want to pre-render based on posts
-//   const paths = posts.map((post) => ({
-//     params: { id: post.id },
-//   }))
 
-//   // We'll pre-render only these paths at build time.
-//   // { fallback: blocking } will server-render pages
-//   // on-demand if the path doesn't exist.
-//   return { paths, fallback: 'blocking' }
-// }
