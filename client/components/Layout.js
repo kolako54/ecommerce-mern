@@ -1,12 +1,13 @@
 import React from 'react'
 import Navbar from './navbar'
 import Notify from './Notify'
-
-export default function Layout({children}) {
+import Modal from './Modal'
+export default function Layout({ children }) {
     return (
         <div className="container">
-            <Navbar/>
+            <Navbar />
             <Notify />
+            <Modal />
             {children}
         </div>
     )

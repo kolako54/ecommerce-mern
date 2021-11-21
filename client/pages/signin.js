@@ -28,7 +28,6 @@ export default function Signin() {
         e.preventDefault();
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const res = await postData('auth/login', userData)
-        console.log(res)
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         dispatch({ type: 'NOTIFY', payload: { success: res.msg } });
         dispatch({ type: 'AUTH', payload: { token: res.access_token, user: res.user } })
@@ -39,7 +38,6 @@ export default function Signin() {
             // httpOnly: true
         })
         localStorage.setItem('firstLogin', true)
-        console.log(userData);
     }
 
 

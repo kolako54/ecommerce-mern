@@ -4,14 +4,16 @@ import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem';
 import Link from 'next/link'
 import { getData } from '../db/fetchData';
+import PaypalBtn from './paypalBtn'
+
 export default function Cart() {
     const { state, dispatch } = useContext(DataContext);
     const { card, auth } = state;
-    console.log('cart component', card)
     const [total, setTotal] = useState(0)
-    if (card.length === 0) {
-        return <img className="mt-5 img-responsive w-100" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3RvcmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80" alt="Empty" />
-    }
+    const [address, setAddress] = useState('')
+    const [mobile, setMobile] = useState('')
+    const [payment, setPayment] = useState('')
+
     useEffect(() => {
         const getTotal = () => {
             const res = card.reduce((prev, curr) => {
@@ -38,6 +40,16 @@ export default function Cart() {
             updateCart()
         }
     }, [])
+
+    if (card.length === 0) {
+        return <img className="mt-5 img-responsive w-100" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3RvcmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80" alt="Empty" />
+    }
+    const handlePayment = () => {
+        if(!address || !mobile){
+            return dispatch({type: 'NOTIFY', payload: {error: 'Please add your address and mobile.'}})
+        }
+        setPayment(true)
+    }
     return (
         <div className="row mx-auto my-5">
             <Head>
@@ -59,16 +71,20 @@ export default function Cart() {
                 <form>
                     <h2>Shipping</h2>
                     <label htmlFor="adress">Address</label>
-                    <input type="text" name="address" id="address" className="form-control mb-2" />
+                    <input onChange={e => setAddress(e.target.value)}
+                        value={address} type="text" name="address" id="address"
+                        className="form-control mb-2" />
                     <h2>Mobile</h2>
                     <label htmlFor="mobile">Mobile</label>
-                    <input type="text" name="mobile" id="mobile" className="form-control mb-2" />
-
+                    <input onChange={e => setMobile(e.target.value)}
+                        type="text" name="mobile" id="mobile"
+                        className="form-control mb-2" value={mobile} />
                 </form>
                 <h3>Total: <span className="text-info">${total}</span></h3>
-                <Link href={auth.user ? '#' : '/signin'}>
-                    <a className="btn btn-dark my-2">Process with payment</a>
-                </Link>
+                {payment ? <PaypalBtn total={total} address={address} mobile={mobile} state={state} dispatch={dispatch}/> : <Link href={auth.user ? '#' : '/signin'}>
+                    <a onClick={handlePayment} className="btn btn-dark my-2">Process with payment</a>
+                </Link>}
+
             </div>
 
 

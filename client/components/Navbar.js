@@ -8,8 +8,6 @@ export default function Navbar() {
     const router = useRouter();
     const { state, dispatch } = useContext(DataContext);
     const { auth, card } = state
-    console.log(card);
-    console.log(auth);
     const isActive = (r) => {
         if (r === router.pathname) return " active"
         else return ""
@@ -49,7 +47,7 @@ export default function Navbar() {
                         <Link href="/cart">
                             <a className={"nav-link" + isActive('/cart')}>
                                 <i className="fas fa-shopping-cart position-relative" aria-hidden="true">
-                                    <span className="position-absolute" style={{ padding: '3px 6px', background: '#ed143dc2', top: '-10px', right: '-10px', color: 'white', fontSize: '14px', borderRadius: '50%' }}>{card.length}</span>
+                                    <span className="position-absolute" style={{ padding: '3px 6px', background: '#ed143dc2', top: '-10px', right: '-10px', color: 'white', fontSize: '14px', borderRadius: '50%' }}>{card?.length ? card.length : 0}</span>
                                 </i>Cart
                             </a>
                         </Link>

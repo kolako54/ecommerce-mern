@@ -50,8 +50,6 @@ export default function Product(props) {
                 <div className="my-2" style={{fontWeight: 300}}>{product.description}</div>
                 <div className="my-2">{product.content} {product.content} {product.content}</div>
                 <button type="button" className="btn btn-dark d-block my-3 px-5" onClick={() => dispatch(addToCard(props.product, card))}>Buy</button>
-
-
             </div>
         </div>
     )
@@ -75,7 +73,6 @@ export async function getStaticProps({ params: { id } }) {
 export async function getStaticPaths() {
     // Call an external API endpoint to get posts
     const res = await getData('product')
-    console.log(res)
     // const posts = await res.json()
   
     // Get the paths we want to pre-render based on posts

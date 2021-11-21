@@ -16,7 +16,6 @@ export default function Register() {
     const { auth } = state;
     useEffect(() => {
         console.log('register page')
-        console.log(auth)
         if (Object.keys(auth).length !== 0) {
             router.push('/');
         }
@@ -33,11 +32,9 @@ export default function Register() {
         if (errMsg) return dispatch({ type: 'NOTIFY', payload: { error: errMsg } })
         dispatch({ type: 'NOTIFY', payload: { loading: true } })
         const res = await postData('auth/register', userData)
-        console.log(res)
         if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
         dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
         router.push('/')
-        console.log(userData);
     }
     return (
         <div>
