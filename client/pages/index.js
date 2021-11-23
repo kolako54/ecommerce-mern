@@ -19,34 +19,34 @@ export default function index(props) {
 }
 /*********** Server Side Render ****************/
 
-// export async function getServerSideProps() {
-//   const res = await getData('product');
-//   console.log('ssr')
-//   console.log(res);
-//   return {
-//     props: {
-//       products: res.products,
-//       result: res.result,
-//     }, // will be passed to the page component as props
-//   }
-// }
-
-/*********** Incremental Static Regeneration ****************/
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await getData('product');
-
-
+  console.log('ssr')
+  console.log(res);
   return {
     props: {
       products: res.products,
       result: res.result,
-    },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 5, // In seconds
+    }, // will be passed to the page component as props
   }
 }
+
+/*********** Incremental Static Regeneration ****************/
+// export async function getStaticProps() {
+//   const res = await getData('product');
+
+
+//   return {
+//     props: {
+//       products: res.products,
+//       result: res.result,
+//     },
+//     // Next.js will attempt to re-generate the page:
+//     // - When a request comes in
+//     // - At most once every 10 seconds
+//     revalidate: 5, // In seconds
+//   }
+// }
 
 
 

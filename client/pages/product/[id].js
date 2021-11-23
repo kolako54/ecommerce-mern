@@ -55,7 +55,7 @@ export default function Product(props) {
     )
 }
 
-export async function getStaticProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id } }) {
     const res = await getData(`product/${id}`);
     console.log(id);
     if(!res){
@@ -65,22 +65,37 @@ export async function getStaticProps({ params: { id } }) {
     }
     return {
         props: {
-            product: res.product
+            product: res.product,
         },
-        revalidate: 5
     }
 }
-export async function getStaticPaths() {
-    // Call an external API endpoint to get posts
-    const res = await getData('product')
-    // const posts = await res.json()
+
+// export async function getStaticProps({ params: { id } }) {
+//     const res = await getData(`product/${id}`);
+//     console.log(id);
+//     if(!res){
+//         return{
+//             notFound: true
+//         }
+//     }
+//     return {
+//         props: {
+//             product: res.product
+//         },
+//         revalidate: 5
+//     }
+// }
+// export async function getStaticPaths() {
+//     // Call an external API endpoint to get posts
+//     const res = await getData('product')
+//     // const posts = await res.json()
   
-    // Get the paths we want to pre-render based on posts
-    const paths = res.products.map((item) => ({
-      params: { id: item._id },
-    }))
+//     // Get the paths we want to pre-render based on posts
+//     const paths = res.products.map((item) => ({
+//       params: { id: item._id },
+//     }))
   
-    // We'll pre-render only these paths at build time.
-    // { fallback: false } means other routes should 404.
-    return { paths, fallback: false }
-  }
+//     // We'll pre-render only these paths at build time.
+//     // { fallback: false } means other routes should 404.
+//     return { paths, fallback: false }
+//   }

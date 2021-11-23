@@ -40,6 +40,7 @@ export const increase = (data, id) => {
 }
 
 export const deleteItem = (data, id, type) => {
+    console.log('deleteeeeeeeeeeeeeee',data)
     const newData = data.filter(item => item._id !== id);
     return ({ type, payload: newData })
 }

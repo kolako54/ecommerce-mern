@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { decrease, increase } from '../store/Actions'
 
 export default function CartItem({ item, dispatch, card }) {
+    console.log('cartItem component', card)
     return (
         <tr>
             <td style={{ width: '100px', overflow: 'hidden' }}>
@@ -33,7 +34,7 @@ export default function CartItem({ item, dispatch, card }) {
             <td className="align-middle" style={{ minWidth: '50px', cursor: 'pointer' }}>
                 <i className="far fa-trash-alt text-danger" style={{ fontSize: '18px' }}
                     data-toggle="modal" data-target="#exampleModal"
-                    onClick={() => dispatch({ type: 'ADD_MODAL', payload: { data: card, title: item.title, id: item._id } })}>
+                    onClick={() => dispatch({ type: 'ADD_MODAL', payload: { data: card, title: item.title, id: item._id,} })}>
 
                 </i>
             </td>
