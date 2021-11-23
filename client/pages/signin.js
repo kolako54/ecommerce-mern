@@ -33,7 +33,7 @@ export default function Signin() {
         dispatch({ type: 'AUTH', payload: { token: res.access_token, user: res.user } })
         Cookies.set('refreshToken', res.refresh_token, {
             path: 'api/auth/accessToken',
-            expires: '15d',
+            expires: 15,
             sameSite: 'lax',
             // httpOnly: true
         })

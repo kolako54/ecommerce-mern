@@ -28,3 +28,6 @@ img{
 
 /* ----------- Product ------------ */
 @import url('./product.css');
+
+/* ----------- Profile ------------ */
+@import url('./profile.css');
