@@ -4,9 +4,11 @@ import { DataContext } from '../store/GlobalState'
 
 export default function Modal() {
     const { state, dispatch } = useContext(DataContext);
+    console.log(state)
     const {modal} = state;
     console.log('Modal',modal);
     const handleSubmit = () => {
+        console.log('this is modal', modal)
         dispatch(deleteItem(modal.data, modal.id, 'ADD_CARD'))
         dispatch({type: 'ADD_MODAL', payload: {}})
 
@@ -17,7 +19,7 @@ export default function Modal() {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title text-capitalize" id="exampleModalLabel">{modal.title}</h5>
+                        <h5 className="modal-title text-capitalize" id="exampleModalLabel">{modal?.title}</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
