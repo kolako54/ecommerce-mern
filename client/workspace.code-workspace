@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "..\\.."
+		},
+		{
+			"path": "..\\..\\..\\Node\\Natours\\starter"
+		},
+		{
+			"path": "..\\..\\..\\Node\\nextjs-ecommerce-master"
+		},
+		{
+			"path": "..\\..\\..\\next-js-middleware-main"
+		}
+	],
+	"settings": {}
+}
