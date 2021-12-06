@@ -54,7 +54,7 @@ export const deleteData = async (url, token) => {
     const res = await fetch(`${baseUrl}/api/${url}`, {
         method: 'DELETE',
         headers: {
-            'Content-Type': application/json,
+            'Content-Type': 'application/json',
             'Authorization': token
         },
     })
