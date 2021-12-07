@@ -12,7 +12,7 @@ export default function Cart() {
 
     const { state, dispatch } = useContext(DataContext);
     console.log('this is cart component', state)
-    const { card, auth } = state;
+    const { card, auth, orders } = state;
     const [total, setTotal] = useState(0)
     const [address, setAddress] = useState('')
     const [mobile, setMobile] = useState('')
@@ -73,7 +73,14 @@ export default function Cart() {
             postData('order', { address, mobile, card, total }, auth.token)
                 .then(res => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-                    dispatch({ type: 'ADD_CARD', payload: [] })
+                    console.log('orders',res.user);
+                    // dispatch({type: 'ADD_ORDERS', payload: [res]})
+                    dispatch({ type: 'ADD_CARD', payload: [] });
+                    const newOrder = {
+                        ...res.newOrder,
+                        user: auth.user
+                    }
+                    dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] })
                     return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
                 });
             console.log('authhhhhhhhhhhhhhhh', auth.user.name)

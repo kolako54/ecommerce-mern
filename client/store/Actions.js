@@ -2,7 +2,8 @@ export const ACTIONS = {
     NOTIFY: 'NOTIFY',
     AUTH: 'AUTH',
     ADD_CARD: 'ADD_CARD',
-    ADD_MODAL: 'ADD_MODAL'
+    ADD_MODAL: 'ADD_MODAL',
+    ADD_ORDERS: 'ADD_ORDERS'
 }
 export const addToCard = (product, card) => {
     if (product.inStock === 0) {
