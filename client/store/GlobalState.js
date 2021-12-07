@@ -4,9 +4,9 @@ import reducers from './Reducers';
 
 export const DataContext = createContext();
 export const DataProvider = ({ children }) => {
-    const initialState = { notify: {}, auth: {},  modal: {}, card: [] }
+    const initialState = { notify: {}, auth: {}, modal: {}, card: [], orders: [] }
     const [state, dispatch] = useReducer(reducers, initialState);
-    const { card } = state
+    const { card, auth } = state
 
 
     // login local storage
@@ -37,6 +37,15 @@ export const DataProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('__next__card01__develio', JSON.stringify(card))
     }, [card])
+
+    useEffect(() => {
+        if (auth.token) {
+            getData('order', auth.token).then(res => {
+                if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } });
+                dispatch({ type: 'ADD_ORDERS', payload: res.orders})
+            })
+        }
+    }, [auth.token])
     return (
         <DataContext.Provider value={{ state, dispatch }}>
             {children}

@@ -4,6 +4,7 @@ import { DataContext } from '../store/GlobalState'
 import validation from '../utils/validation'
 import { patchData } from '../db/fetchData'
 import { ImageUpload } from './../utils/imageUpload'
+import Link from 'next/link'
 
 export default function Profile() {
     const initialState = {
@@ -15,7 +16,8 @@ export default function Profile() {
     const [data, setData] = useState(initialState);
     const { avatar, name, password, cf_password } = data;
     const { state, dispatch } = useContext(DataContext);
-    const { auth, notify } = state;
+    const { auth, notify, orders } = state;
+    console.log('inside of profile page', orders)
     useEffect(() => {
         if (auth.user) {
             setData({ ...data, name: auth.user.name })
@@ -47,7 +49,7 @@ export default function Profile() {
         console.log('updateInForrrrrrr2');
 
         console.log([avatar])
-        dispatch({type: 'NOTIFY', payload: {loading: true}})
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
         if (avatar) {
             console.log('mediaaaaaa')
             media = await ImageUpload([avatar])
@@ -126,8 +128,48 @@ export default function Profile() {
                     </div>
                     <button onClick={handleUpdateProfile} className="btn btn-info" disabled={notify.loading}>Update</button>
                 </div>
-                <div className="col-md-8">
-                    <h3>Orders</h3>
+                <div className="col-md-8 ">
+                    <h3 className="text-uppercase">Orders</h3>
+                    <div className="my-3 table-responsive">
+                        <table className="table-bordered table-hover w-100 text-uppercase"
+                            style={{ minWidth: '600px', cursor: 'pointer' }}>
+                            <thead className="bg-light font-weight-bold">
+                                <tr>
+                                    <td className="p-2">id</td>
+                                    <td className="p-2">date</td>
+                                    <td className="p-2">total</td>
+                                    <td className="p-2">delivered</td>
+                                    <td className="p-2">action</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    orders.map((order, i) => (
+                                        <tr key={i}>
+                                            <td className="p-2">{order._id}</td>
+                                            <td className="p-2">
+                                                {new Date(order.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="p-2">${order.total}</td>
+                                            <td className="p-2">
+                                                {
+                                                    order.delivered
+                                                    ? <i className="fas fa-check text-success"> </i>
+                                                    : <i className="fas fa-times text-danger"> </i>
+                                                }
+                                            </td>
+                                            <td className="p-2">
+                                                <Link href={`/detail-order/${order._id}`}>
+                                                    Details
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </section>
         </div>

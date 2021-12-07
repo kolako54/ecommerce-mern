@@ -23,7 +23,7 @@ const auth = async (req, res) => {
         const user = await Users.findById(decoded.id);
         console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvv')
         console.log(user)
-        return {id: user._id};
+        return {id: user._id, role: user.role, root: user.root};
     } catch (err) {
        return res.status(400).json({err: err.message})
     }
