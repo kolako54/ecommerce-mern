@@ -5,6 +5,7 @@ import validation from '../utils/validation'
 import { patchData } from '../db/fetchData'
 import { ImageUpload } from './../utils/imageUpload'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Profile() {
     const initialState = {
@@ -22,6 +23,7 @@ export default function Profile() {
         if (auth.user) {
             setData({ ...data, name: auth.user.name })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.user])
 
     const handleChange = (e) => {
@@ -103,7 +105,7 @@ export default function Profile() {
                 <div className="col-md-4">
                     <h3 className="text-center text-uppercase">{auth.user.role === 'user' ? 'User Profile' : 'Admin Profile'}</h3>
                     <div className="avatar">
-                        <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} alt={"avatar"} />
+                        <Image layout="fill" src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} alt={"avatar"} />
                         <span>
                             <i className="fas fa-camera"></i>
                             <p>Change</p>
@@ -139,14 +141,18 @@ export default function Profile() {
                                     <td className="p-2">date</td>
                                     <td className="p-2">total</td>
                                     <td className="p-2">delivered</td>
-                                    <td className="p-2">action</td>
+                                    <td className="p-2">paid</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     orders.map((order, i) => (
                                         <tr key={i}>
-                                            <td className="p-2">{order._id}</td>
+                                            <td className="p-2">
+                                                <Link href={`/detail-order/${order._id}`}>
+                                                    {order._id}
+                                                </Link>
+                                            </td>
                                             <td className="p-2">
                                                 {new Date(order.createdAt).toLocaleDateString()}
                                             </td>
@@ -154,20 +160,21 @@ export default function Profile() {
                                             <td className="p-2">
                                                 {
                                                     order.delivered
-                                                    ? <i className="fas fa-check text-success"> </i>
-                                                    : <i className="fas fa-times text-danger"> </i>
+                                                        ? <i className="fas fa-check text-success"> </i>
+                                                        : <i className="fas fa-times text-danger"> </i>
                                                 }
                                             </td>
                                             <td className="p-2">
-                                                <Link href={`/detail-order/${order._id}`}>
-                                                    Details
-                                                </Link>
+                                                {
+                                                    order.paid
+                                                        ? <i className="fas fa-check text-success"> </i>
+                                                        : <i className="fas fa-times text-danger"> </i>
+                                                }
                                             </td>
                                         </tr>
                                     ))
                                 }
                             </tbody>
-
                         </table>
                     </div>
                 </div>

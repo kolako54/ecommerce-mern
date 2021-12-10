@@ -16,6 +16,7 @@ export const addToCard = (product, card) => {
     return ({ type: 'ADD_CARD', payload: [...card, { ...product, quantity: 1 }] })
 
 };
+
 export const decrease = (data, id) => {
     const newData = [...data];
     newData.forEach((item) => {
@@ -41,7 +42,11 @@ export const increase = (data, id) => {
 }
 
 export const deleteItem = (data, id, type) => {
-    console.log('deleteeeeeeeeeeeeeee',data)
+    console.log('deleteeeeeeeeeeeeeee', data)
     const newData = data.filter(item => item._id !== id);
+    return ({ type, payload: newData })
+}
+export const updateOrder = (data, id, post, type) => {
+    const newData = data.map(item => (item._id === id ? post : item));
     return ({ type, payload: newData })
 }

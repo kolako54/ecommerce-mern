@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 import { DataContext } from '../store/GlobalState'
 import CartItem from '../components/CartItem';
 import Link from 'next/link'
@@ -17,6 +18,7 @@ export default function Cart() {
     const [address, setAddress] = useState('')
     const [mobile, setMobile] = useState('')
     const [payment, setPayment] = useState('')
+    const [callback, setCallback] = useState(false);
     // const [testPayment, setTestPayment] = useState('')
 
     useEffect(() => {
@@ -44,11 +46,10 @@ export default function Cart() {
             }
             updateCart()
         }
-    }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [callback])
 
-    if (card.length === 0) {
-        return <img className="mt-5 img-responsive w-100" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3RvcmV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80" alt="Empty" />
-    }
+
     const handlePayment = () => {
         if (!address || !mobile) {
             return dispatch({ type: 'NOTIFY', payload: { error: 'Please add your address and mobile.' } })
@@ -56,24 +57,34 @@ export default function Cart() {
         return dispatch({ type: 'NOTIFY', payload: { error: "It's just for paypal payment in real production, Please use this below button." } })
         // setPayment(true)
     }
-    const handleBuy = () => {
+    const handleBuy = async () => {
         if (!address || !mobile) {
             return dispatch({ type: 'NOTIFY', payload: { error: 'Please add your address and mobile.' } })
         }
-        // if(!auth.user){
-        //     router.push('/signin')
-        //     return dispatch({ type: 'NOTIFY', payload: { error: 'You should log in first!'} })
+        if (!auth.user) {
+            router.push('/signin')
+            return dispatch({ type: 'NOTIFY', payload: { error: 'Please sign up first' } });
+        }
+        let newCart = [];
+        for (const item of card) {
+            const res = await getData(`product/${item._id}`);
+            if (res.product.inStock - item.quantity >= 0) {
+                newCart.push(item)
+            }
+        }
+        if(newCart.length < card.length){
+            setCallback(!callback);
+            return dispatch({ type: 'NOTIFY', payload: { error: 'The product is out of stock or the quanjtity is insufficient' } })
 
-        // }
-        
+        }
+        dispatch({ type: 'NOTIFY', payload: { loading: true } })
 
-        // setPayment(true)
-        dispatch({ type: 'NOTIFY', payload: { loading: true} })
+
         setTimeout(() => {
             postData('order', { address, mobile, card, total }, auth.token)
                 .then(res => {
                     if (res.err) return dispatch({ type: 'NOTIFY', payload: { error: res.err } })
-                    console.log('orders',res.user);
+                    console.log('orders', res.user);
                     // dispatch({type: 'ADD_ORDERS', payload: [res]})
                     dispatch({ type: 'ADD_CARD', payload: [] });
                     const newOrder = {
@@ -81,12 +92,19 @@ export default function Cart() {
                         user: auth.user
                     }
                     dispatch({ type: 'ADD_ORDERS', payload: [...orders, newOrder] })
-                    return dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+                    dispatch({ type: 'NOTIFY', payload: { success: res.msg } })
+                    router.push(`/detail-order/${res.newOrder._id}`)
                 });
+            
             console.log('authhhhhhhhhhhhhhhh', auth.user.name)
-            alert(`Transaction completed by ${auth.user.name}`)
+            // alert(`Transaction completed by ${auth.user.name}`)
         }, 2000);
 
+    }
+    
+
+    if (card.length === 0) {
+        return <Image layout='responsive' height="100" width="100" src="/Wavy_Bus-17_Single-09.jpg" alt="Empty" />
     }
     return (
         <div className="row mx-auto my-5">
@@ -122,11 +140,10 @@ export default function Cart() {
                 {payment ? <PaypalBtn total={total} address={address} mobile={mobile} state={state} dispatch={dispatch} /> : <Link href={auth.user ? '#' : '/signin'}>
                     <a onClick={handlePayment} className="btn btn-dark my-2 w-100">Process with payment</a>
                 </Link>}
-                <button className="btn btn-dark w-100" onClick={handleBuy}>BUY (FREE4TEST)</button>
+                <button className="btn btn-dark w-100" onClick={handleBuy}>SUBMIT ORDER</button>
 
             </div>
-
-
         </div>
     )
 }
+

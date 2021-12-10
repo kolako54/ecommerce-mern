@@ -1,17 +1,17 @@
 import React from 'react'
 import Link from 'next/link'
 import { decrease, increase } from '../store/Actions'
+import Image from 'next/image'
 
 export default function CartItem({ item, dispatch, card }) {
     console.log('cartItem component', card)
     return (
         <tr>
             <td style={{ width: '100px', overflow: 'hidden' }}>
-                <img style={{ minWidth: '80px', height: '80px' }}
+                <Image height="100" width="100" layout="intrinsic"
                     className="img-thumbnail w-100"
                     src={item.images[0].url}
-                    alt={item.images[0].url}
-                    alt="" />
+                    alt={item.images[0].url} />
             </td>
             <td style={{ minWidth: '200px' }} className="w-50 align-middle">
                 <h5 className="text-capitalize text-secondary">

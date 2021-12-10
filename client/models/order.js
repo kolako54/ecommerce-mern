@@ -11,11 +11,16 @@ const OrderSchema = new mongoose.Schema({
     delivered: {
         type: Boolean,
         default: false
-    }
+    },
+    paid:{
+        type: Boolean,
+        default: false,
+    },
+    dateOfPayment: Date,
 },
 {
     timestamps: true
 });
 
-const OrderModel = mongoose.models?.order || mongoose.model('order', OrderSchema);
+const OrderModel = mongoose.models.order || mongoose.model('order', OrderSchema);
 export default OrderModel

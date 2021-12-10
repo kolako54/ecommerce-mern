@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { DataContext } from '../../store/GlobalState';
 import { ACTIONS, addToCard } from '../../store/Actions';
 import { useRouter } from 'next/dist/client/router';
+import Image from 'next/image'
 
 
 
@@ -11,16 +12,16 @@ export default function Product(props) {
     const router = useRouter()
     const [product] = useState(props.product);
     const [tab, setTab] = useState(0);
-    const {state, dispatch} = useContext(DataContext);
-    const {card} = state;
+    const { state, dispatch } = useContext(DataContext);
+    const { card } = state;
     const isActive = (i) => {
         if (tab === i) return 'active';
         return '';
     }
-    console.log('fuck',router.isFallback)
+    console.log('fuck', router.isFallback)
     if (router.isFallback) {
         return <h1>Loading...</h1>
-      }
+    }
 
     return (
         <div className="row detail_page">
@@ -28,11 +29,17 @@ export default function Product(props) {
                 <title>Detail Product</title>
             </Head>
             <div className="col-md-6">
-                <img className="d-block img-thumbnail rounded mt-4 w-100" src={product.images[tab].url} alt={product.images[tab].url} style={{ height: '350px' }} />
-
+                <div className="d-block img-thumbnail rounded mt-4 w-100">
+                    <Image layout="responsive" width="100" height="100" src={product.images[tab].url} alt={product.images[tab].url} style={{ height: '350px' }} />
+                </div>
                 <div className="row mx-0" style={{ cursor: 'pointer' }}>
                     {product.images.map((img, i) => (
-                        <img onClick={() => setTab(i)} key={i} src={img.url} alt={img.url} className={`img-thumbnail rounded ${isActive(i)}`} style={{ height: '80px', width: '20%' }} />
+                        <div key={i} className={`img-thumbnail rounded ${isActive(i)}`}>
+                            <Image layout="intrinsic" width="100" height="100" onClick={() => setTab(i)}
+                                src={img.url} alt={img.url}
+
+                                style={{ height: '80px', width: '20%' }} />
+                        </div>
                     ))}
 
                 </div>
@@ -47,7 +54,7 @@ export default function Product(props) {
                     }
                     <h6 className="text-danger">Sold: {product.sold}</h6>
                 </div>
-                <div className="my-2" style={{fontWeight: 300}}>{product.description}</div>
+                <div className="my-2" style={{ fontWeight: 300 }}>{product.description}</div>
                 <div className="my-2">{product.content} {product.content} {product.content}</div>
                 <button type="button" className="btn btn-dark d-block my-3 px-5" onClick={() => dispatch(addToCard(props.product, card))}>Buy</button>
             </div>
@@ -58,8 +65,8 @@ export default function Product(props) {
 export async function getServerSideProps({ params: { id } }) {
     const res = await getData(`product/${id}`);
     console.log(id);
-    if(!res){
-        return{
+    if (!res) {
+        return {
             notFound: true
         }
     }
@@ -89,12 +96,12 @@ export async function getServerSideProps({ params: { id } }) {
 //     // Call an external API endpoint to get posts
 //     const res = await getData('product')
 //     // const posts = await res.json()
-  
+
 //     // Get the paths we want to pre-render based on posts
 //     const paths = res.products.map((item) => ({
 //       params: { id: item._id },
 //     }))
-  
+
 //     // We'll pre-render only these paths at build time.
 //     // { fallback: false } means other routes should 404.
 //     return { paths, fallback: false }
