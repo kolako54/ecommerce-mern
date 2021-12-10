@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { DataContext } from '../store/GlobalState'
 import Cookies from 'js-cookie';
+import Image from 'next/image'
 
 export default function Navbar() {
     const router = useRouter();
@@ -16,13 +17,15 @@ export default function Navbar() {
     const handleLogout = () => {
         Cookies.remove('refreshToken', { path: 'api/auth/accessToken' });
         localStorage.removeItem('firstLogin');
-        dispatch({ type: 'AUTH', payload: {} })
+        router.push('/signin');
+        dispatch({ type: 'AUTH', payload: {} })      
         dispatch({ type: 'NOTIFY', payload: { success: 'Logged out!' } })
+
     }
     const loggedRouter = () => {
         return (<li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src={auth.user.avatar} alt={auth.user.name} style={{ borderRadius: '50%', width: '30px', height: '30px', transform: 'translateY(-3px)', marginRight: '3px' }} />
+                <Image width="100" height="100" src={auth.user.avatar} alt={auth.user.name} style={{ borderRadius: '50%', width: '30px', height: '30px', transform: 'translateY(-3px)', marginRight: '3px' }} />
                 {auth.user.name}
             </a>
 
